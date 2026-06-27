@@ -1,0 +1,5 @@
+So going forward, use:
+- "summary cards" — the 3 small stat cards at the top
+- "transaction list card" — the big white card with the category groups
+- "category group rows" — the colored expandable rows (Personal, Salary, etc.)
+- "transaction details modal" — the popup that appears when you click a transaction row 

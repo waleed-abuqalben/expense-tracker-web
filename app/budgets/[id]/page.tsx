@@ -57,8 +57,7 @@ export default function BudgetDetailPage() {
     createBudget,
   } = useBudgets(budgetId)
 
-  const [incomeModalOpen, setIncomeModalOpen] = useState(false)
-  const [expenseModalOpen, setExpenseModalOpen] = useState(false)
+  const [transactionModalOpen, setTransactionModalOpen] = useState(false)
   const [editingTransactionData, setEditingTransactionData] = useState<Transaction | null>(null)
   const [detailsModalOpen, setDetailsModalOpen] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
@@ -85,20 +84,11 @@ export default function BudgetDetailPage() {
   const netBalance = currentBudget?.netBalance ?? (totalIncome - totalExpenses)
   const startEditTransaction = (transaction: Transaction) => {
     setEditingTransactionData(transaction)
-    if (transaction.type === TransactionType.INCOME) {
-      setIncomeModalOpen(true)
-    } else {
-      setExpenseModalOpen(true)
-    }
+    setTransactionModalOpen(true)
   }
 
-  const handleIncomeModalClose = () => {
-    setIncomeModalOpen(false)
-    setEditingTransactionData(null)
-  }
-
-  const handleExpenseModalClose = () => {
-    setExpenseModalOpen(false)
+  const handleTransactionModalClose = () => {
+    setTransactionModalOpen(false)
     setEditingTransactionData(null)
   }
 
@@ -221,22 +211,12 @@ export default function BudgetDetailPage() {
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex gap-2 flex-wrap">
                     <Button
-                      onClick={() => setIncomeModalOpen(true)}
-                      className="bg-green-600 hover:bg-green-700 text-white"
+                      onClick={() => setTransactionModalOpen(true)}
                       disabled={currentBudget?.isArchived}
                       size="sm"
                     >
                       <Plus className="h-4 w-4 mr-1" />
-                      Income
-                    </Button>
-                    <Button
-                      onClick={() => setExpenseModalOpen(true)}
-                      className="bg-red-600 hover:bg-red-700 text-white"
-                      disabled={currentBudget?.isArchived}
-                      size="sm"
-                    >
-                      <Plus className="h-4 w-4 mr-1" />
-                      Expense
+                      Transaction
                     </Button>
                     <Button
                       onClick={() => createCategory.setOpen(true)}
@@ -409,21 +389,8 @@ export default function BudgetDetailPage() {
         )}
 
         <TransactionModal
-          isOpen={incomeModalOpen}
-          onClose={handleIncomeModalClose}
-          type={TransactionType.INCOME}
-          isArchived={currentBudget?.isArchived}
-          currentBudgetId={budgetId}
-          budgetMonth={currentBudget?.month}
-          budgetYear={currentBudget?.year}
-          onCreate={handleTransactionSaved}
-          editingTransaction={editingTransactionData}
-        />
-
-        <TransactionModal
-          isOpen={expenseModalOpen}
-          onClose={handleExpenseModalClose}
-          type={TransactionType.EXPENSE}
+          isOpen={transactionModalOpen}
+          onClose={handleTransactionModalClose}
           isArchived={currentBudget?.isArchived}
           currentBudgetId={budgetId}
           budgetMonth={currentBudget?.month}
